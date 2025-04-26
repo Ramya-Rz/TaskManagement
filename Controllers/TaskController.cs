@@ -50,6 +50,18 @@ namespace TaskManagement.Controllers
         {
             try
             {
+                if (task.User.Id == 0)
+                {
+                    var userData = await _context.Users.FirstOrDefaultAsync(u => u.Id == task.AssignedUserId);
+                    if (userData != null)
+                    {
+                        task.User = userData;
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = "User not found" });
+                    }
+                }
                 if (task.Id == 0)
                 {
                     _context.Tasks.Add(task);
@@ -61,7 +73,7 @@ namespace TaskManagement.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(task);
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { message = "Error creating task", error = ex.Message });
             }
@@ -83,7 +95,7 @@ namespace TaskManagement.Controllers
         {
             try
             {
-               var task = await _context.Tasks.FindAsync(Id);
+                var task = await _context.Tasks.FindAsync(Id);
                 if (task == null)
                 {
                     return NotFound(new { message = "Task not found" });
@@ -92,7 +104,7 @@ namespace TaskManagement.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(task);
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { message = "Error deleting task", error = ex.Message });
             }

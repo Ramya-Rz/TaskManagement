@@ -86,7 +86,6 @@ namespace TaskManagement.Controllers
         /// <response code="400">If there is an error deleting the user, returns a BadRequest with the error message.</response>
         /// <response code="404">If the user with the specified ID is not found, returns a NotFound response.</response>
         [HttpDelete]
-        [HttpDelete]
         public async Task<IActionResult> DeleteUser(int Id)
         {
             try

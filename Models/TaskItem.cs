@@ -9,6 +9,8 @@ namespace TaskManagement.Models
         public required string Title { get; set; }
         public bool IsCompleted { get; set; }
         public int? AssignedUserId { get; set; }
+
+        [ForeignKey("AssignedUserId")]
         public User User { get; set; } 
     }
 
